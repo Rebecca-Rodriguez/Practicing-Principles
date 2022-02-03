@@ -5,6 +5,9 @@
 #include <unordered_set>
 #include <set>
 #include <algorithm>
+#include <stack>
+#include <queue>
+#include <climits>
 #include "ABS.h"
 #include "ABQ.h"
 using namespace std;
@@ -264,6 +267,32 @@ public:
 
 class Stepik {
 public:
+    bool inLanguage(char* theString)
+    {
+        // determine whether theString has the same number of A's as B's (STACK)
+        std::stack<char> s;
+        for (char* it = theString; *it; it++) {
+            if (*it != 'A' && *it != 'B') return false;
+            if (s.empty()) s.push(*it);
+            else if (*it != s.top()) s.pop();
+            else if (*it == s.top()) s.push(*it);
+        }
+        if (!s.empty()) return false;
+        return true;
+    }
+
+    bool checkValidity(queue<int> q)
+    {
+        // A Valid queue is one in which the numbers are inserted in ascending order
+        int prev = INT_MIN;
+        while (!q.empty()) {
+            if (prev > q.front()) return false;
+            prev = q.front();
+            q.pop();
+        }
+        return true;
+    }
+    
     int TripleNum(int* num)
     {
         return *num * 3;
@@ -293,7 +322,110 @@ public:
         return checkPalindrome(s.substr(1, s.length() - 2));
     }
 };
+/*------------------------------------------------------- Linked Lists -------------------------------------------------------*/
 
+
+/*------------------------------------------------------- Linked Lists -------------------------------------------------------*/
+class Node {
+public:
+    int value;
+    Node* next = NULL;
+};
+
+Node* add(Node* head, int index, int valueInput)
+{
+    Node* newNode = new Node();
+    newNode->value = valueInput;
+
+    if (index == 0) {
+        newNode->next = head;
+        return newNode;
+    }
+    Node* curr = head;
+    for (int i = 0; i < index - 1; i++) {
+        if (curr != nullptr) curr = curr->next;
+        else return nullptr;
+    }
+
+    if (curr != nullptr) {
+        newNode->next = curr->next;
+        curr->next = newNode;
+        return head;
+    }
+    return nullptr;
+}
+
+float median(Node* head)
+{
+    Node* slow = head;
+    Node* fast = head;
+    while (fast->next != nullptr && fast->next->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    if (fast->next != nullptr)
+        return (slow->value + slow->next->value) / 2.0;
+    else
+        return slow->value;
+}
+
+float interQuartile(Node* head)
+{
+    Node* q1 = head;
+    Node* q2 = head; //median
+    Node* q3 = head;
+
+    Node* curr = head;
+
+    int count = 0;
+    float currData, q1Data, q2Data, q3Data;
+
+    while (curr != nullptr)
+    {
+        q1Data = q1->value;
+        q2Data = q2->value;
+        q3Data = q3->value;
+        count++;
+        curr = curr->next;
+
+        if (count % 2 == 0)
+        {
+            q2 = q2->next;
+        }
+        if (count % 3 == 0)
+        {
+            if (count % 2 == 0 && curr != nullptr)
+                q3 = q3->next->next->next;
+            else if (curr == nullptr)
+                q3 = q2->next->next;
+            else
+                q3 = q3->next->next;
+        }
+        if (count % 4 == 0 && curr != nullptr)
+        {
+            q1 = q1->next;
+        }
+
+    }
+    if (count > 4 && count <= 9) q1 = head->next;
+    if (count == 11) q3 = q3->next;
+
+    float result, avg1, avg3;
+    int secCount = count / 2;
+    if (secCount % 2 == 0) {
+        avg1 = ((q1->value + q1->next->value) / 2.0);
+        avg3 = ((q3->value + q3->next->value) / 2.0);
+    }
+    else
+    {
+        avg1 = q1->value;
+        avg3 = q3->value;
+    }
+
+    return avg3 - avg1;
+}
+
+/*------------------------------------------------------- Main -------------------------------------------------------*/
 int main()
 {
     //------------------------------------- Question 1: Uses the People struct -------------------------------------//
