@@ -79,7 +79,6 @@ void swappyBoi(int* swapA, int* swapB)
     swapB = swapA;
 }
 
-
 class Solution {
 public:
     bool isPalindrome(string s) {
@@ -267,6 +266,8 @@ public:
 
 class Stepik {
 public:
+    
+    
     bool inLanguage(char* theString)
     {
         // determine whether theString has the same number of A's as B's (STACK)
@@ -280,7 +281,6 @@ public:
         if (!s.empty()) return false;
         return true;
     }
-
     bool checkValidity(queue<int> q)
     {
         // A Valid queue is one in which the numbers are inserted in ascending order
@@ -292,7 +292,6 @@ public:
         }
         return true;
     }
-    
     int TripleNum(int* num)
     {
         return *num * 3;
