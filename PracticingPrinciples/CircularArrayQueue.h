@@ -8,9 +8,10 @@ class CircularArrayQueue {
 
 private:
     // private data member
+    int CAPACITY = 30;
     int front;
     int back;
-    int items[CAPACITY];
+    int items[30];
     int counter;
 public:
     CircularArrayQueue();

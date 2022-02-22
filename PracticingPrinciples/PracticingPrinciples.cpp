@@ -321,8 +321,6 @@ public:
         return checkPalindrome(s.substr(1, s.length() - 2));
     }
 };
-/*------------------------------------------------------- Linked Lists -------------------------------------------------------*/
-
 
 /*------------------------------------------------------- Linked Lists -------------------------------------------------------*/
 class Node {
@@ -422,6 +420,89 @@ float interQuartile(Node* head)
     }
 
     return avg3 - avg1;
+}
+
+//------------------------------------- Binary Search Trees -------------------------------------//
+class TreeNode
+{
+public:
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* insertNode(TreeNode* root, int key)
+{
+    if (root == nullptr)
+        return new TreeNode(key);
+    if (key < root->val)
+        root->left = insertNode(root->left, key);
+    else
+        root->right = insertNode(root->right, key);
+    return root;
+}
+
+void inorder(TreeNode* head)
+{
+    if (head == nullptr)
+        cout << "";
+    else
+    {  
+        inorder(head->left);
+        cout << head->val << " ";
+        inorder(head->right);
+    }
+}
+
+bool validateBST(TreeNode* root, int min, int max)
+{
+    if (root == nullptr)
+        return true;
+    if (root->val <= min || root->val >= max)
+        return false;
+    return validateBST(root->left, min, root->val) && validateBST(root->right, root->val, max);
+}
+
+string traverse(TreeNode* root)
+{
+    if (root == nullptr)
+        return "";
+    string leftSubTree = traverse(root->left);
+    string rootValue = to_string(root->val);
+    string rightSubTree = traverse(root->right);
+    return leftSubTree + rootValue + rightSubTree;
+}
+
+void Flip(TreeNode* root) {
+    if (root == nullptr) return;
+    TreeNode* temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+
+    Flip(root->left);
+    Flip(root->right);
+}
+
+void sumOfRightLeaves(TreeNode* root)
+{
+    queue<TreeNode*> q;
+    int sum = 0;
+    if (root != nullptr)
+        q.push(root);
+    while (!q.empty())
+    {
+        if (q.front()->right != nullptr && q.front()->right->right == nullptr && q.front()->right->left == nullptr)
+            sum += q.front()->right->val;
+        if (q.front()->left != nullptr)
+            q.push(q.front()->left);
+        if (q.front()->right != nullptr)
+            q.push(q.front()->right);
+
+        q.pop();
+    }
+    cout << sum;
 }
 
 /*------------------------------------------------------- Main -------------------------------------------------------*/
@@ -568,8 +649,13 @@ int main()
             // this will print the keys alphabetically, but only the first instance of the key will print
             cout << iter->first << " " << iter->second << ";";
         }
+        cout << endl;
     }
-
-
+    //------------------------------------- Binary Search Trees -------------------------------------//
+    TreeNode* binaryRoot = nullptr;
+    binaryRoot = insertNode(binaryRoot, 50);
+    binaryRoot = insertNode(binaryRoot, 20);
+    binaryRoot = insertNode(binaryRoot, 14);
+    binaryRoot = insertNode(binaryRoot, 22);
     return 0;
 }
